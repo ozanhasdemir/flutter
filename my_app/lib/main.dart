@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
+import './randomWords.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,51 +11,43 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+
+
     return MaterialApp(
-        theme: ThemeData(primaryColor: Colors.lightGreen),//Creates the main color of the app
-        home: RandomWords()
-    );
+        theme: ThemeData(primaryColor: Colors.lightGreen),
+        //Creates the main color of the app
+        home: HomeScreen()
+        );
+
   }
+
+
+
 }
 
-class RandomWords extends StatefulWidget{
+class HomeScreen  extends StatelessWidget {
+
   @override
-  RandomWordsState createState() => RandomWordsState();
-}
-
-class RandomWordsState extends State<RandomWords>{
-  final _randomWordPairs = <WordPair>[];
-
-  //This widget creates the listview of the word pairs
-  Widget _buildList() {
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemBuilder: (context, item) {
-        //If we get an odd number add a divider
-        if(item.isOdd) return Divider();
-
-        //number devided by 2 gives us pair amount
-        final index = item ~/2;
-
-        //if we get the end of the list create new word pairs
-        if(index >= _randomWordPairs.length){
-          _randomWordPairs.addAll(generateWordPairs().take(10));
-        }
-
-        return _buildRow(_randomWordPairs[index]);
-      },
-    );
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Flutter Assignment'),
+          actions: <Widget>[
+            //IconButton(onPressed: _goHome, icon: Icon(Icons.home)),
+            IconButton(onPressed: () =>
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => RandomWords())),
+                icon: Icon(Icons.list))
+          ],
+        ),
+        body: Center(
+          child: Column(
+            children: [
+              Text('Flutter Assignment of Ozan Hasdemir and Monica Vargas'),
+              Image.network('https://picsum.photos/250?image=9')],)
+                ));
   }
 
-  Widget _buildRow(WordPair pair){
-    return ListTile(title: Text(pair.asPascalCase, style: TextStyle(fontSize: 18)));
+
 }
-
-  Widget build (BuildContext context) {
-      return Scaffold(
-          appBar: AppBar (title: Text('Flutter Assignment')),
-          body: _buildList());
-    }
-}
-
-
